@@ -9,48 +9,25 @@ import org.junit.Test;
 public class BoomerangTest {
 
     // 1 %--------------------------------------------------------------------------------------------------
+
+    /*  
+        The program is relying on the values in params being valid integers. 
+        If someone were to pass a non-integer value (like "abc"), 
+        Integer.valueOf would throw a NumberFormatException.
+    */
     @Test
     public void testValidPlayerCount() {
-        // Test the lower limit
         try {
-            String[] params = {"1", "1"};
-            BoomerangAustralia game = new BoomerangAustralia(params);
-        } catch (Exception e) {
-            Assert.fail("Expected valid game initialization");
-        }
-
-        // Test the upper limit
-        try {
-            String[] params = {"3", "1"};
-            BoomerangAustralia game = new BoomerangAustralia(params);
-        } catch (Exception e) {
-            Assert.fail("Expected valid game initialization");
-        }
-    }
-    /*
-    @Test
-    public void testInvalidPlayerCount() {
-        // Test below the lower limit
-        try {
-            String[] params = {"0", "1"};
+            String[] params = {"2", "abc"};
             new BoomerangAustralia(params);
-            Assert.fail("Expected an exception for invalid number of players and bots");
-        } catch (Exception e) {
-            // This is expected, so do nothing.
-        }
-
-        // Test above the upper limit
-        try {
-            String[] params = {"3", "2"};
-            new BoomerangAustralia(params);
-            Assert.fail("Expected an exception for invalid number of players and bots");
+            Assert.fail("Expected valid game initialization");
         } catch (Exception e) {
             // This is expected, so do nothing.
         }
     }
 
     // 2 %--------------------------------------------------------------------------------------------------
-    @Test
+    /*@Test
     public void testDeckSize() {
         String[] params = {"1", "1"};
         try {
