@@ -1,8 +1,5 @@
 package boom;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,10 +7,10 @@ public class BoomerangTest {
 
     // 1 %--------------------------------------------------------------------------------------------------
 
-    /*  
-        The program is relying on the values in params being valid integers. 
-        If someone were to pass a non-integer value (like "abc"), 
-        Integer.valueOf would throw a NumberFormatException.
+    /*
+     * The program is relying on the values in params being valid integers. 
+     * If someone were to pass a non-integer value (like "abc"),
+     * Integer.valueOf would throw a NumberFormatException.
     */
     @Test
     public void testValidPlayerCount() {
@@ -27,7 +24,51 @@ public class BoomerangTest {
     }
 
     // 2 %--------------------------------------------------------------------------------------------------
-    /*@Test
+
+    /* 
+     * Typo in the regions array: "Wester Australia" should be "Western Australia".
+     * 
+     * Should be "New South Wales" no?
+    */
+
+    // 3 %--------------------------------------------------------------------------------------------------
+
+    /*
+     * The code adheres to the Third Requirement.
+    */
+
+    // 4 %--------------------------------------------------------------------------------------------------
+
+    /*
+     * The code adheres to the Forth Requirement.
+    */
+
+    // 5 %--------------------------------------------------------------------------------------------------
+
+    /*
+     * The code adheres to the Fifth Requirement.
+    */
+
+    // 6 %--------------------------------------------------------------------------------------------------
+
+    /*
+     * The code adheres to the Sixth Requirement.
+    */
+
+    // 7 %--------------------------------------------------------------------------------------------------
+
+    /*
+     * The code adheres to the Seventh Requirement.
+    */
+
+    // 8 %--------------------------------------------------------------------------------------------------
+
+    
+}
+
+
+
+/*@Test
     public void testDeckSize() {
         String[] params = {"1", "1"};
         try {
@@ -75,6 +116,3 @@ public class BoomerangTest {
             Assert.fail("Expected valid game initialization");
         }
     }*/
-
-    // 3 %--------------------------------------------------------------------------------------------------
-}
