@@ -3,7 +3,7 @@ package old;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BoomerangTest {
+public class BoomerangTestOLD {
 
     // 1 %--------------------------------------------------------------------------------------------------
 
