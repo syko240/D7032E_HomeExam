@@ -3,11 +3,23 @@ package boomerang;
 import java.util.ArrayList;
 import java.util.List;
 
+import boomerang.communication.Client;
+import boomerang.communication.Server;
+import boomerang.game.GameEngine;
+import boomerang.game.Player;
+import boomerang.game.drafting.BasicDraft;
+import boomerang.game.drafting.Drafting;
+import boomerang.game.gamemode.BoomerangAustralia;
+import boomerang.game.gamemode.GameMode;
+
 class BoomerangGame {
 
-    private List<IPlayer> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private GameMode gameMode;
-    private DraftingStrategy draftingStrategy;
+    private Drafting draftingStrategy;
+
+    private Server gameServer;
+    private Client gameClient;
 
     public BoomerangGame(String[] params) throws Exception {
         if (params.length == 2) {
@@ -25,11 +37,10 @@ class BoomerangGame {
     }
 
     public void initGame(int numPlayers, int numBots) throws Exception {
-        draftingStrategy = new LeftToRight();
-
+        draftingStrategy = new BasicDraft();
         gameMode = new BoomerangAustralia();
-
         gameMode.initializeDeck();
+        
         server(numPlayers, numBots);
 
         GameEngine game = new GameEngine(gameMode, draftingStrategy, players);
@@ -37,11 +48,19 @@ class BoomerangGame {
     }
 
     public void client(String ipAddress) throws Exception {
-
+        gameClient = new Client(ipAddress);
+        gameClient.handleServerMessages();
+        // more logic to handle game-specific messages from the server.
     }
 
     public void server(int numPlayers, int numBots) throws Exception {
+        gameServer = new Server();
+        gameServer.start(); // start the server and wait for clients to connect.
 
+        while (!gameServer.getLobby().allPlayersConnected(numPlayers + numBots)) {
+            Thread.sleep(1000); // Wait for 1 second before checking again
+        }
+        // once the desired number of players (including bots) have connected, start game.
     }
 
     public static void main(String argv[]) {

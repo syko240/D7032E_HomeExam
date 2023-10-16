@@ -1,4 +1,4 @@
-package boomerang;
+package boomerang.game;
 
 public class Card {
     private String name;

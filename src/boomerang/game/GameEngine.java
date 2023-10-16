@@ -1,13 +1,16 @@
-package boomerang;
+package boomerang.game;
 
 import java.util.List;
 
-class GameEngine {
-    private GameMode gameMode;
-    private DraftingStrategy draftingStrategy;
-    private List<IPlayer> players;
+import boomerang.game.drafting.Drafting;
+import boomerang.game.gamemode.GameMode;
 
-    public GameEngine(GameMode gameMode, DraftingStrategy draftingStrategy, List<IPlayer> players) {
+public class GameEngine {
+    private GameMode gameMode;
+    private Drafting draftingStrategy;
+    private List<Player> players;
+
+    public GameEngine(GameMode gameMode, Drafting draftingStrategy, List<Player> players) {
         this.gameMode = gameMode;
         this.draftingStrategy = draftingStrategy;
         this.players = players;
@@ -19,14 +22,14 @@ class GameEngine {
         for (int i = 0; i < 4; i++) {
             draftRound();
             // Simplified scoring for brevity
-            for (IPlayer player : players) {
+            for (Player player : players) {
                 System.out.println("Player's score after round " + (i+1) + ": " + gameMode.scoreRound(player));
             }
         }
     }
 
     public void draftRound() {
-        for (IPlayer player : players) {
+        for (Player player : players) {
             draftingStrategy.draft(player, players);
         }
     }

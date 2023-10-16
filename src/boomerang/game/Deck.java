@@ -1,4 +1,4 @@
-package boomerang;
+package boomerang.game;
 
 import java.util.*;
 import java.io.FileReader;
@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-class Deck {
+public class Deck {
     public static List<Card> loadCardsFromJSON(String filename) {
         List<Card> deck = new ArrayList<>();
         JSONParser parser = new JSONParser();
