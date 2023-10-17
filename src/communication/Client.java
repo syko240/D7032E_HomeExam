@@ -26,7 +26,11 @@ public class Client {
         try {
             while (true) {
                 String message = readMessageFromServer();
-                if (message.length() > 0) {
+                if ("END".equals(message)) {
+                    //System.out.println("Terminating client...");
+                    socket.close(); // Close the client socket
+                    return "Terminating client..."; // Exit the method, effectively terminating the client
+                } else if (message.length() > 0) {
                     return message;
                 }
             }

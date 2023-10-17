@@ -1,32 +1,28 @@
 package game;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import game.drafting.Drafting;
-import game.gamemode.GameMode;
+import communication.Server;
 
 public class GameEngine {
-    private GameMode gameMode;
-    private Drafting draftingStrategy;
-    private List<Player> players;
-
-    public GameEngine(GameMode gameMode, Drafting draftingStrategy, List<Player> players) {
-        this.gameMode = gameMode;
-        this.draftingStrategy = draftingStrategy;
-        this.players = players;
+    private final int LOOP_COUNT = 4;
+    
+    public GameEngine() {
     }
 
     public void startGame() {
-        //game loop
-        for (int i = 0; i < 4; i++) {
-            draftRound();
-            
+        Server.getInstance().broadcastMessage("START");
+        for (int i = 0; i < LOOP_COUNT; i++) {
+            // Notify clients that a new round has started
+            Server.getInstance().broadcastMessage("Round " + (i + 1));
+    
+            ArrayList<String> messages = Server.getInstance().waitForClientMessages();
+            for (String message : messages) {
+                System.out.println(message);
+            }
+    
+            //Server.getInstance().broadcastMessage("Received messages for round " + (i + 1));
         }
-    }
-
-    public void draftRound() {
-        for (Player player : players) {
-            draftingStrategy.draft(player, players);
-        }
+        Server.getInstance().broadcastMessage("END");
     }
 }
