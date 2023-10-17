@@ -40,7 +40,7 @@ public class CardAustralia extends Card {
         return activity;
     }
 
-    public void printCard() {
+    /*public void printCard() {
         String border = "+----------------------------------+";
         //String emptyLine = "|                                  |";
     
@@ -55,6 +55,28 @@ public class CardAustralia extends Card {
         System.out.println("|  Activity: " + padRight(getActivity(), 22) + "|");
         //System.out.println(emptyLine);
         System.out.println(border);
+    }
+    
+    // Helper method to pad a string with spaces on the right
+    private String padRight(String s, int n) {
+        return String.format("%1$-" + n + "s", s);
+    }*/
+
+    public String getCardString() {
+        String border = "+----------------------------------+";
+        StringBuilder cardString = new StringBuilder();
+    
+        cardString.append(border).append("\n");
+        cardString.append("|  Name: ").append(padRight(getName(), 26)).append("|").append("\n");
+        cardString.append("|  Letter: ").append(padRight(getletter(), 24)).append("|").append("\n");
+        cardString.append("|  Region: ").append(padRight(getRegion(), 24)).append("|").append("\n");
+        cardString.append("|  Number: ").append(padRight(String.valueOf(getNumber()), 24)).append("|").append("\n");
+        cardString.append("|  Collection: ").append(padRight(getCollection(), 20)).append("|").append("\n");
+        cardString.append("|  Animal: ").append(padRight(getAnimal(), 24)).append("|").append("\n");
+        cardString.append("|  Activity: ").append(padRight(getActivity(), 22)).append("|").append("\n");
+        cardString.append(border).append("\n");
+    
+        return cardString.toString();
     }
     
     // Helper method to pad a string with spaces on the right

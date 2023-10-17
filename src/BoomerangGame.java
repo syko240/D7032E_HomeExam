@@ -1,14 +1,13 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
+import game.gamemode.GameMode;
+import game.gamemode.BoomerangAustralia;
 import communication.*;
 import game.*;
-import game.card.Card;
-import game.card.CardAustralia;
 
 class BoomerangGame {
-    private List<Card> deck;
+    private GameMode gameMode;
     private GameEngine game;
     private Client client;
     private final Scanner scanner = new Scanner(System.in);
@@ -40,9 +39,13 @@ class BoomerangGame {
                 System.out.println();  // Add an empty line between cards for better readability
             }
         }*/
+
+        gameMode = new BoomerangAustralia();
+        gameMode.initializeDeck();
+
         server(port, numPlayers, numBots);
 
-        game = new GameEngine();
+        game = new GameEngine(gameMode);
         game.startGame();
     }
 
@@ -54,9 +57,8 @@ class BoomerangGame {
         awaitMessageFromServer();
     }
 
-    public String promptUserForMessage() {
-        //Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your message for this round: ");
+    public String promptClientForMessage() {
+        System.out.print("> ");
         return scanner.nextLine();
     }
 
@@ -66,7 +68,7 @@ class BoomerangGame {
                 String message = client.readMessageFromServer();
                 if (message.startsWith("Round ")) {
                     System.out.println(message);
-                    String inputMessage = promptUserForMessage();
+                    String inputMessage = promptClientForMessage();
                     client.sendMessage(inputMessage);
                 } else if (message.equals("END")) {
                     // bimbam do nothing

@@ -21,5 +21,5 @@ public abstract class Card {
 
     public abstract int getNumber();
 
-    public abstract void printCard();
+    public abstract String getCardString();
 }

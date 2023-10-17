@@ -2,11 +2,16 @@ package communication;
 
 import java.net.*;
 import java.util.ArrayList;
+
+import game.player.Human;
+import game.player.Player;
+
 import java.io.*;
 
 public class Server {
     public ServerSocket aSocket;
     public ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
+    public ArrayList<Player> players = new ArrayList<Player>();
     private static Server server_instance = null;
 
     public class ClientHandler {
@@ -14,7 +19,7 @@ public class Server {
         private Socket socket;
         private ObjectOutputStream outToClient;
         private ObjectInputStream inFromClient;
-        public int nextId = 0;
+        public static int nextId = 1;
 
         public ClientHandler(Socket socket) {
             try {
@@ -83,6 +88,10 @@ public class Server {
             Socket connection = aSocket.accept();
             ClientHandler handler = new ClientHandler(connection);
             clients.add(handler);
+
+            Human newPlayer = new Human(handler.id);
+            players.add(newPlayer);
+
             return true;
         } catch (Exception e) {
             return false;
@@ -92,7 +101,7 @@ public class Server {
     public void listenToClients(int amountOfPlayers) {
         while (clients.size() < amountOfPlayers) {
             if (acceptClient()) {
-                System.out.println("Client connected");
+                System.out.println("Player " + players.get(players.size() - 1).id + " connected");
             }
         }
     }
@@ -131,5 +140,15 @@ public class Server {
             pool.submit_task(() -> readMessageFromClient(id));
         }
         return pool.run_tasks();
+    }
+
+    
+
+    public Player getPlayerById(int id) {
+        return players.get(id);
+    }
+
+    public int getNumberOfPlayers() {
+        return players.size();
     }
 }

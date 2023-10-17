@@ -1,8 +1,12 @@
 package game.gamemode;
 
-import game.Player;
+import java.util.List;
+
+import game.card.Card;
+import game.player.Player;
 
 public interface GameMode {
-    public abstract void initializeDeck();
-    public abstract int scoreRound(Player player);
+    public void initializeDeck();
+    public List<Card> draftCards();
+    public int scoreRound(Player player);
 }

@@ -2,8 +2,8 @@ package game.drafting;
 
 import java.util.List;
 
-import game.Player;
 import game.card.Card;
+import game.player.Player;
 
 // Clockwise Drafting
 public class BasicDraft implements Drafting {
