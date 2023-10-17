@@ -1,11 +1,7 @@
 @echo off
 
 echo Compiling code...
-javac -d bin src\old\BoomerangAustralia.java
-if ERRORLEVEL 1 goto error
-
-echo Compiling tests...
-javac -d bin -cp lib\org.junit4-4.3.1.jar;bin test\old\BoomerangTestOLD.java
+javac -d bin -sourcepath src -cp lib\json-simple-1.1.jar src\*.java
 if ERRORLEVEL 1 goto error
 
 echo Compilation successful!

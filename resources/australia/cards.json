@@ -1,7 +1,7 @@
 [
     {
         "name": "The Bungle Bungles",
-        "site": "A",
+        "letter": "A",
         "region": "Western Australia",
         "number": 1,
         "collection": "Leaves",
@@ -10,7 +10,7 @@
     },
     {
         "name": "The Pinnacles",
-        "site": "B",
+        "letter": "B",
         "region": "Western Australia",
         "number": 1,
         "collection": "",
@@ -19,7 +19,7 @@
     },
     {
         "name": "Margaret River",
-        "site": "C",
+        "letter": "C",
         "region": "Western Australia",
         "number": 1,
         "collection": "Shells",
@@ -28,7 +28,7 @@
     },
     {
         "name": "Kalbarri National Park",
-        "site": "D",
+        "letter": "D",
         "region": "Western Australia",
         "number": 1,
         "collection": "Wildflowers",
@@ -37,7 +37,7 @@
     },
     {
         "name": "Uluru",
-        "site": "E",
+        "letter": "E",
         "region": "Northern Territory",
         "number": 4,
         "collection": "",
@@ -46,7 +46,7 @@
     },
     {
         "name": "Kakadu National Park",
-        "site": "F",
+        "letter": "F",
         "region": "Northern Territory",
         "number": 4,
         "collection": "",
@@ -55,7 +55,7 @@
     },
     {
         "name": "Nitmiluk National Park",
-        "site": "G",
+        "letter": "G",
         "region": "Northern Territory",
         "number": 4,
         "collection": "Shells",
@@ -64,7 +64,7 @@
     },
     {
         "name": "King's Canyon",
-        "site": "H",
+        "letter": "H",
         "region": "Northern Territory",
         "number": 4,
         "collection": "",
@@ -73,7 +73,7 @@
     },
     {
         "name": "The Great Barrier Reef",
-        "site": "I",
+        "letter": "I",
         "region": "Queensland",
         "number": 6,
         "collection": "Wildflowers",
@@ -82,7 +82,7 @@
     },
     {
         "name": "The Whitsundays",
-        "site": "J",
+        "letter": "J",
         "region": "Queensland",
         "number": 6,
         "collection": "",
@@ -91,7 +91,7 @@
     },
     {
         "name": "Daintree Rainforest",
-        "site": "K",
+        "letter": "K",
         "region": "Queensland",
         "number": 6,
         "collection": "Souvenirs",
@@ -100,7 +100,7 @@
     },
     {
         "name": "Surfers Paradise",
-        "site": "L",
+        "letter": "L",
         "region": "Queensland",
         "number": 6,
         "collection": "Wildflowers",
@@ -109,7 +109,7 @@
     },
     {
         "name": "Barossa Valley",
-        "site": "M",
+        "letter": "M",
         "region": "South Australia",
         "number": 3,
         "collection": "",
@@ -118,7 +118,7 @@
     },
     {
         "name": "Lake Eyre",
-        "site": "N",
+        "letter": "N",
         "region": "South Australia",
         "number": 3,
         "collection": "",
@@ -127,7 +127,7 @@
     },
     {
         "name": "Kangaroo Island",
-        "site": "O",
+        "letter": "O",
         "region": "South Australia",
         "number": 3,
         "collection": "",
@@ -136,7 +136,7 @@
     },
     {
         "name": "Mount Gambier",
-        "site": "P",
+        "letter": "P",
         "region": "South Australia",
         "number": 3,
         "collection": "Wildflowers",
@@ -145,7 +145,7 @@
     },
     {
         "name": "Blue Mountains",
-        "site": "Q",
+        "letter": "Q",
         "region": "New South Whales",
         "number": 5,
         "collection": "",
@@ -154,7 +154,7 @@
     },
     {
         "name": "Sydney Harbour",
-        "site": "R",
+        "letter": "R",
         "region": "New South Whales",
         "number": 5,
         "collection": "",
@@ -163,7 +163,7 @@
     },
     {
         "name": "Bondi Beach",
-        "site": "S",
+        "letter": "S",
         "region": "New South Whales",
         "number": 5,
         "collection": "",
@@ -172,7 +172,7 @@
     },
     {
         "name": "Hunter Valley",
-        "site": "T",
+        "letter": "T",
         "region": "New South Whales",
         "number": 5,
         "collection": "",
@@ -181,7 +181,7 @@
     },
     {
         "name": "Melbourne",
-        "site": "U",
+        "letter": "U",
         "region": "Victoria",
         "number": 2,
         "collection": "",
@@ -190,7 +190,7 @@
     },
     {
         "name": "The MCG",
-        "site": "V",
+        "letter": "V",
         "region": "Victoria",
         "number": 2,
         "collection": "Leaves",
@@ -199,7 +199,7 @@
     },
     {
         "name": "Twelve Apostles",
-        "site": "W",
+        "letter": "W",
         "region": "Victoria",
         "number": 2,
         "collection": "Shells",
@@ -208,7 +208,7 @@
     },
     {
         "name": "Royal Exhibition Building",
-        "site": "X",
+        "letter": "X",
         "region": "Victoria",
         "number": 2,
         "collection": "Leaves",
@@ -217,7 +217,7 @@
     },
     {
         "name": "Salamanca Markets",
-        "site": "Y",
+        "letter": "Y",
         "region": "Tasmania",
         "number": 7,
         "collection": "Leaves",
@@ -226,7 +226,7 @@
     },
     {
         "name": "Mount Wellington",
-        "site": "Z",
+        "letter": "Z",
         "region": "Tasmania",
         "number": 7,
         "collection": "",
@@ -235,7 +235,7 @@
     },
     {
         "name": "Port Arthur",
-        "site": "*",
+        "letter": "*",
         "region": "Tasmania",
         "number": 7,
         "collection": "Leaves",
@@ -244,7 +244,7 @@
     },
     {
         "name": "Richmond",
-        "site": "-",
+        "letter": "-",
         "region": "Tasmania",
         "number": 7,
         "collection": "",
