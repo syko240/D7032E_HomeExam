@@ -62,16 +62,13 @@ class BoomerangGame {
         try {
             while (true) {
                 String message = client.readMessageFromServer();
-                if (message.equals("START")) {
-                    // bimbam
-                } else if (message.startsWith("Round ")) {
+                if (message.startsWith("Round ")) {
                     System.out.println(message);
                     String inputMessage = promptUserForMessage();
                     client.sendMessage(inputMessage);
-                } /*else if (message.equals("END")) {
-                    System.exit(0);
-                    // bimbam
-                }*/ else {
+                } else if (message.equals("END")) {
+                    // bimbam do nothing
+                } else {
                     System.out.println(message);
                 }
             }

@@ -11,17 +11,14 @@ public class GameEngine {
     }
 
     public void startGame() {
-        Server.getInstance().broadcastMessage("START");
         for (int i = 0; i < LOOP_COUNT; i++) {
-            // Notify clients that a new round has started
+            // New round
             Server.getInstance().broadcastMessage("Round " + (i + 1));
     
             ArrayList<String> messages = Server.getInstance().waitForClientMessages();
             for (String message : messages) {
                 System.out.println(message);
             }
-    
-            //Server.getInstance().broadcastMessage("Received messages for round " + (i + 1));
         }
         Server.getInstance().broadcastMessage("END");
     }

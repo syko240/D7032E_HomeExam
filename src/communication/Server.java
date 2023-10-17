@@ -40,9 +40,23 @@ public class Server {
         public String readMessage() {
             try {
                 return (String) inFromClient.readObject();
-            } catch (Exception e) {
-                // handle exception
+            } catch (SocketException se) {
+                // Client lost connection
+                broadcastConnectionTerminated();
                 return null;
+            } catch (Exception e) {
+                // Handle other exceptions
+                return null;
+            }
+        }
+
+        public void terminateConnection() {
+            try {
+                socket.close();
+                outToClient.close();
+                inFromClient.close();
+            } catch (Exception e) {
+                // Handle exception
             }
         }
     }
@@ -88,7 +102,24 @@ public class Server {
     public void broadcastMessage(String message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
+            if ("END".equals(message) || "Connection terminated".equals(message)) {
+                client.terminateConnection();
+            }
         }
+
+        // Close the server socket if the END message is sent
+        if ("END".equals(message) || "Connection terminated".equals(message)) {
+            try {
+                aSocket.close();
+            } catch (IOException e) {
+                // Handle exception
+            }
+            System.exit(0); // Terminate the server application
+        }
+    }
+
+    public void broadcastConnectionTerminated() {
+        broadcastMessage("Connection terminated");
     }
 
     public String readMessageFromClient(int id) {

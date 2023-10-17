@@ -26,25 +26,43 @@ public class Client {
         try {
             while (true) {
                 String message = readMessageFromServer();
-                if ("END".equals(message)) {
-                    //System.out.println("Terminating client...");
-                    socket.close(); // Close the client socket
-                    return "Terminating client..."; // Exit the method, effectively terminating the client
-                } else if (message.length() > 0) {
+                if (message == null || "END".equals(message) || "Connection terminated".equals(message)) {
+                    terminateConnection();
+                    System.exit(0);  // Terminate the client application
+                }
+                if (message.length() > 0) {
                     return message;
                 }
             }
         } catch (Exception e) {
+            terminateConnection();  // Ensure termination if an exception occurs
+            System.exit(0);  // Terminate the client application
             return "No message from server";
         }
     }
 
+    
     public String readMessageFromServer() {
         try {
             return (String) inFromServer.readObject();
         } catch (Exception e) {
-            return "No message from server";
+            String terminationMessage = terminateConnection();
+            System.out.println(terminationMessage);
+            System.exit(0); 
+            return terminationMessage; // wont exec
         }
+    }
+    
+    public String terminateConnection() {
+        try {
+            socket.close();
+            outToServer.close();
+            inFromServer.close();
+        } catch (Exception e) {
+            // Handle exception
+        }
+
+        return "Connection terminated";
     }
 
     public void sendMessage(String message) {
