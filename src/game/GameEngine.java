@@ -17,14 +17,10 @@ public class GameEngine {
     }
 
     public void startGame() {
-
-        // Game rounds, handling drafts, and other game logic
+        //game loop
         for (int i = 0; i < 4; i++) {
             draftRound();
-            // Simplified scoring for brevity
-            for (Player player : players) {
-                System.out.println("Player's score after round " + (i+1) + ": " + gameMode.scoreRound(player));
-            }
+            
         }
     }
 

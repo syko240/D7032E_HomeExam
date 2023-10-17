@@ -42,10 +42,10 @@ public class CardAustralia extends Card {
 
     public void printCard() {
         String border = "+----------------------------------+";
-        String emptyLine = "|                                  |";
+        //String emptyLine = "|                                  |";
     
         System.out.println(border);
-        System.out.println(emptyLine);
+        //System.out.println(emptyLine);
         System.out.println("|  Name: " + padRight(getName(), 26) + "|");
         System.out.println("|  Letter: " + padRight(getletter(), 24) + "|");
         System.out.println("|  Region: " + padRight(getRegion(), 24) + "|");
@@ -53,7 +53,7 @@ public class CardAustralia extends Card {
         System.out.println("|  Collection: " + padRight(getCollection(), 20) + "|");
         System.out.println("|  Animal: " + padRight(getAnimal(), 24) + "|");
         System.out.println("|  Activity: " + padRight(getActivity(), 22) + "|");
-        System.out.println(emptyLine);
+        //System.out.println(emptyLine);
         System.out.println(border);
     }
     

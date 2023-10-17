@@ -8,6 +8,7 @@ import game.card.CardAustralia;
 
 class BoomerangGame {
     private List<Card> deck;
+    private GameEngine game;
 
     public BoomerangGame(String[] params) throws Exception {
         if (params.length == 1) {
@@ -31,13 +32,15 @@ class BoomerangGame {
 
     public void init() {
         deck = Deck.loadCardsFromJSON("resources/australia/cards.json");
-        
+
         for (Card card : deck) {
-        if (card instanceof CardAustralia) {
-            ((CardAustralia) card).printCard();
-            System.out.println();  // Add an empty line between cards for better readability
+            if (card instanceof CardAustralia) {
+                ((CardAustralia) card).printCard();
+                System.out.println();  // Add an empty line between cards for better readability
+            }
         }
-    }
+
+        game = new GameEngine(null, null, null);
     }
 
     public static void main(String argv[]) {
