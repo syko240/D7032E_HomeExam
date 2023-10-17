@@ -21,14 +21,14 @@ public class Deck {
                 JSONObject cardObject = (JSONObject) o;
 
                 String name = (String) cardObject.get("name");
-                String site = (String) cardObject.get("letter");
+                String letter = (String) cardObject.get("letter");
                 String region = (String) cardObject.get("region");
                 int number = Integer.parseInt(cardObject.get("number").toString());
                 String collection = (String) cardObject.get("collection");
                 String animal = (String) cardObject.get("animal");
                 String activity = (String) cardObject.get("activity");
 
-                deck.add(new CardAustralia(name, site, region, number, collection, animal, activity));
+                deck.add(new CardAustralia(name, letter, region, number, collection, animal, activity));
             }
         } catch (Exception e) {
             e.printStackTrace();
