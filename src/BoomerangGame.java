@@ -11,6 +11,7 @@ class BoomerangGame {
     private List<Card> deck;
     private GameEngine game;
     private Client client;
+    private final Scanner scanner = new Scanner(System.in);
 
     public BoomerangGame(String[] params) throws Exception {
         if (params.length == 3) {
@@ -52,8 +53,9 @@ class BoomerangGame {
         client.sendMessage("Hello Server");
         awaitMessageFromServer();
     }
+
     public String promptUserForMessage() {
-        Scanner scanner = new Scanner(System.in);
+        //Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your message for this round: ");
         return scanner.nextLine();
     }

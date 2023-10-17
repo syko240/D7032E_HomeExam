@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.io.*;
 
 public class Server {
-    private int port;
     public ServerSocket aSocket;
     public ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
     private static Server server_instance = null;
@@ -66,7 +65,6 @@ public class Server {
 
     public void serverStart(int port) {
         try {
-            this.port = port;
             this.aSocket = new ServerSocket(port);
         } catch (Exception e) {
             e.printStackTrace();

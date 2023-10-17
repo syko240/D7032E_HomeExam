@@ -4,16 +4,12 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
-    private String ipAddress;
-    private int port;
     private Socket socket;
     private ObjectOutputStream outToServer;
     private ObjectInputStream inFromServer;
 
     public Client(String ipAddress, int port) {
         try {
-            this.ipAddress = ipAddress;
-            this.port = port;
             this.socket = new Socket(ipAddress, port);
             this.outToServer = new ObjectOutputStream(socket.getOutputStream());
             this.inFromServer = new ObjectInputStream(socket.getInputStream());
