@@ -21,7 +21,7 @@ public class Deck {
                 JSONObject cardObject = (JSONObject) o;
 
                 String name = (String) cardObject.get("name");
-                String site = (String) cardObject.get("site");
+                String site = (String) cardObject.get("letter");
                 String region = (String) cardObject.get("region");
                 int number = Integer.parseInt(cardObject.get("number").toString());
                 String collection = (String) cardObject.get("collection");

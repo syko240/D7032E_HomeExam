@@ -4,6 +4,7 @@ import java.util.List;
 import communication.*;
 import game.*;
 import game.card.Card;
+import game.card.CardAustralia;
 
 class BoomerangGame {
     private List<Card> deck;
@@ -31,6 +32,12 @@ class BoomerangGame {
     public void init() {
         deck = Deck.loadCardsFromJSON("resources/australia/cards.json");
         
+        for (Card card : deck) {
+        if (card instanceof CardAustralia) {
+            ((CardAustralia) card).printCard();
+            System.out.println();  // Add an empty line between cards for better readability
+        }
+    }
     }
 
     public static void main(String argv[]) {

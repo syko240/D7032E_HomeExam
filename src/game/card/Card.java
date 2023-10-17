@@ -20,4 +20,6 @@ public abstract class Card {
     public abstract String getRegion();
 
     public abstract int getNumber();
+
+    public abstract void printCard();
 }
