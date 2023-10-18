@@ -44,7 +44,6 @@ class BoomerangGame {
         }*/
         drafting = new BasicDraft();
         gameMode = new BoomerangAustralia();
-        gameMode.initializeDeck();
 
         server(port, numPlayers, numBots);
 
@@ -69,7 +68,7 @@ class BoomerangGame {
         try {
             while (true) {
                 String message = client.readMessageFromServer();
-                if (message.startsWith("PROMPT")) {
+                if (message.equals("PROMPT")) {
                     String inputMessage = promptClientForMessage();
                     client.sendMessage(inputMessage);
                 } else if (message.equals("END")) {

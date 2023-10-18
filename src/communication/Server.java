@@ -130,7 +130,8 @@ public class Server {
     }
 
     public String readMessageFromClient(int id) {
-        return clients.get(id).readMessage();
+        int clientID = clients.get(id).id;
+        return "(ClientID: "+ clientID +")" + clients.get(id).readMessage();
     }
 
     public ArrayList<String> waitForClientMessages() {

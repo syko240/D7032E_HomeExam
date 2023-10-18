@@ -40,12 +40,20 @@ public class CardAustralia extends Card {
         return activity;
     }
 
-    public boolean getHidden() {
-        return hidden;
+    public boolean getThrowCard() {
+        return throwCard;
     }
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
+    public void setThrowCard(boolean throwCard) {
+        this.throwCard = throwCard;
+    }
+
+    public boolean getCatchCard() {
+        return catchCard;
+    }
+
+    public void setCatchCard(boolean catchCard) {
+        this.catchCard = catchCard;
     }
 
     /*public void printCard() {
@@ -70,14 +78,20 @@ public class CardAustralia extends Card {
         return String.format("%1$-" + n + "s", s);
     }*/
 
-    public String getCardString() {
-        if (getHidden()) {
-            return "card(\"hidden card\")";
+    public String getCardString(boolean dontShowCard) {
+        if (dontShowCard) {
+            return "card(\"Throw Card\")";
         }
     
         StringBuilder cardString = new StringBuilder();
     
-        cardString.append("card(");
+        if (this.getThrowCard()) {
+            cardString.append("Throw Card(");
+        } else if (this.getCatchCard()) {
+            cardString.append("Catch Card(");
+        } else {
+            cardString.append("card(");
+        }
         cardString.append("name: \"").append(getName()).append("\", ");
         cardString.append("letter: \"").append(getletter()).append("\", ");
         cardString.append("region: \"").append(getRegion()).append("\", ");

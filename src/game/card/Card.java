@@ -5,7 +5,8 @@ public abstract class Card {
     protected String letter;
     protected String region;
     protected int number;
-    protected boolean hidden;
+    protected boolean throwCard;
+    protected boolean catchCard;
 
     public Card(String name, String letter, String region, int number) {
         this.name = name;
@@ -22,9 +23,13 @@ public abstract class Card {
 
     public abstract int getNumber();
 
-    public abstract boolean getHidden();
+    public abstract boolean getThrowCard();
 
-    public abstract void setHidden(boolean hidden);
+    public abstract void setThrowCard(boolean throwCard);
 
-    public abstract String getCardString();
+    public abstract boolean getCatchCard();
+
+    public abstract void setCatchCard(boolean catchCard);
+
+    public abstract String getCardString(boolean dontShowCard);
 }
