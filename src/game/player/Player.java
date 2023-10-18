@@ -7,7 +7,7 @@ import game.card.Card;
 
 public abstract class Player {
     public List<Card> hand = new ArrayList<>();
-    public static List<Card> toDraft = new ArrayList<>();
+    public List<Card> chosenCards = new ArrayList<>();
     public int id;
 
     public Player(int id) {

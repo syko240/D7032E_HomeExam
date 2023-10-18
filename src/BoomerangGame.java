@@ -5,10 +5,13 @@ import game.gamemode.GameMode;
 import game.gamemode.BoomerangAustralia;
 import communication.*;
 import game.*;
+import game.drafting.BasicDraft;
+import game.drafting.Drafting;
 
 class BoomerangGame {
     private GameMode gameMode;
     private GameEngine game;
+    private Drafting drafting;
     private Client client;
     private final Scanner scanner = new Scanner(System.in);
 
@@ -39,13 +42,13 @@ class BoomerangGame {
                 System.out.println();  // Add an empty line between cards for better readability
             }
         }*/
-
+        drafting = new BasicDraft();
         gameMode = new BoomerangAustralia();
         gameMode.initializeDeck();
 
         server(port, numPlayers, numBots);
 
-        game = new GameEngine(gameMode);
+        game = new GameEngine(gameMode, drafting);
         game.startGame();
     }
 
@@ -66,8 +69,7 @@ class BoomerangGame {
         try {
             while (true) {
                 String message = client.readMessageFromServer();
-                if (message.startsWith("Round ")) {
-                    System.out.println(message);
+                if (message.startsWith("PROMPT")) {
                     String inputMessage = promptClientForMessage();
                     client.sendMessage(inputMessage);
                 } else if (message.equals("END")) {

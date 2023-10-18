@@ -40,6 +40,14 @@ public class CardAustralia extends Card {
         return activity;
     }
 
+    public boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
     /*public void printCard() {
         String border = "+----------------------------------+";
         //String emptyLine = "|                                  |";
@@ -63,6 +71,25 @@ public class CardAustralia extends Card {
     }*/
 
     public String getCardString() {
+        if (getHidden()) {
+            return "card(\"hidden card\")";
+        }
+    
+        StringBuilder cardString = new StringBuilder();
+    
+        cardString.append("card(");
+        cardString.append("name: \"").append(getName()).append("\", ");
+        cardString.append("letter: \"").append(getletter()).append("\", ");
+        cardString.append("region: \"").append(getRegion()).append("\", ");
+        cardString.append("number: \"").append(getNumber()).append("\", ");
+        cardString.append("collection: \"").append(getCollection()).append("\", ");
+        cardString.append("animal: \"").append(getAnimal()).append("\", ");
+        cardString.append("activity: \"").append(getActivity()).append("\")");
+    
+        return cardString.toString();
+    }
+
+    /*public String getCardString() {
         String border = "+----------------------------------+";
         StringBuilder cardString = new StringBuilder();
     
@@ -82,5 +109,5 @@ public class CardAustralia extends Card {
     // Helper method to pad a string with spaces on the right
     private String padRight(String s, int n) {
         return String.format("%1$-" + n + "s", s);
-    }
+    }*/
 }

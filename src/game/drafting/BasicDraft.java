@@ -1,5 +1,6 @@
 package game.drafting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import game.card.Card;
@@ -8,12 +9,12 @@ import game.player.Player;
 // Clockwise Drafting
 public class BasicDraft implements Drafting {
     @Override
-    public void draft(Player currentPlayer, List<Player> allPlayers) {
-        int currentIndex = allPlayers.indexOf(currentPlayer);
-        int nextIndex = (currentIndex + 1) % allPlayers.size();
+    public void draft(List<Player> players) {
+        List<Card> tempLastHand = new ArrayList<>(players.get(players.size() - 1).hand);
 
-        Card cardToPass = currentPlayer.hand.get(0); 
-        currentPlayer.hand.remove(0);
-        allPlayers.get(nextIndex).hand.add(cardToPass);
+        for (int i = players.size() - 1; i > 0; i--) {
+            players.get(i).hand = players.get(i - 1).hand;
+        }
+        players.get(0).hand = tempLastHand;
     }
 }
