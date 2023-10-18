@@ -8,6 +8,8 @@ import game.drafting.Drafting;
 import communication.Server;
 import game.card.Card;
 import game.gamemode.GameMode;
+import game.player.Bot;
+import game.player.Human;
 import game.player.Player;
 
 public class GameEngine {
@@ -33,13 +35,13 @@ public class GameEngine {
                 if (draft == 0) {
                     Server.getInstance().broadcastMessage("\033[33mChose a Throw Card. (Enter the \'letter\' of the card)\033[0m");
                 } else {
-                    Server.getInstance().broadcastMessage("\033[33mChose a Card to keep. (Enter the \\'letter\\' of the card)\033[0m");
+                    Server.getInstance().broadcastMessage("\033[33mChose a Card to keep. (Enter the \'letter\' of the card)\033[0m");
                     throwCard = false;
                 }
 
                 Server.getInstance().broadcastMessage("PROMPT");
                 ArrayList<String> messages = Server.getInstance().waitForClientMessages();
-                checkClientInput(messages, throwCard);
+                checkPlayerInput(messages, throwCard);
 
                 drafting.draft(Server.getInstance().players);
             }
@@ -64,43 +66,45 @@ public class GameEngine {
         }
     }
 
-    private void checkClientInput(ArrayList<String> messages, boolean throwCard) {
+    private void checkPlayerInput(ArrayList<String> messages, boolean throwCard) {
         Pattern pattern = Pattern.compile("\\(ClientID: (\\d+)\\)(.*)");
-
-        for (String message : messages) {
-            Matcher matcher = pattern.matcher(message);
-            boolean validInput = false;
-            int clientID = 0;
-            String clientMessage = "";
-
-            if (matcher.find()) {  // if the pattern is found in the message
-                clientID = Integer.parseInt(matcher.group(1));  // extract clientID
-                clientMessage = matcher.group(2).trim();     // extract the actual message
-            }
-
-            while (!validInput) {
-                int index = 0;
-                for (Card card : Server.getInstance().players.get(clientID-1).hand) {
-                    if (clientMessage.equals(card.getletter())) {
-                        if (throwCard) {
-                            card.setThrowCard(true);
-                        }
-                        Server.getInstance().players.get(clientID-1).chosenCards.add(Server.getInstance().players.get(clientID-1).hand.remove(index));
-                        validInput = true;
-                        System.out.println(validInput);
-                        break;
-                    }
-                    index++;
-                }
-
-                if (!validInput) {
-                    Server.getInstance().clients.get(clientID-1).sendMessage("\033[31mChose a valid card in your hand by entering the correct \'letter\'\033[0m");
-                    Server.getInstance().clients.get(clientID-1).sendMessage("PROMPT");
-                    clientMessage = Server.getInstance().readMessageFromClient(clientID-1);
+        for (Player player : Server.getInstance().players) {
+            if (player instanceof Bot) {
+                // Simulate bot action
+                String botChoice = ((Bot) player).chooseCard();
+                processPlayerChoice(player, botChoice, throwCard);
+            } else {
+                // Process human player action
+                String message = messages.get(player.id - 1);
+                Matcher matcher = pattern.matcher(message);
+                if (matcher.find()) {
+                    int clientID = Integer.parseInt(matcher.group(1));
+                    String clientMessage = matcher.group(2).trim();
+                    processPlayerChoice(Server.getInstance().players.get(clientID-1), clientMessage, throwCard);
                 }
             }
+        }
+    }
 
-            System.out.println(message);
+    private void processPlayerChoice(Player player, String choice, boolean throwCard) {
+        int index = 0;
+        boolean validInput = false;
+        for (Card card : player.hand) {
+            if (choice.equals(card.getLetter())) {
+                if (throwCard) {
+                    card.setThrowCard(true);
+                }
+                player.chosenCards.add(player.hand.remove(index));
+                validInput = true;
+                break;
+            }
+            index++;
+        }
+        if (!validInput && player instanceof Human) {
+            Server.getInstance().clients.get(player.id-1).sendMessage("\033[31mChose a valid card in your hand by entering the correct \'letter\'\033[0m");
+            Server.getInstance().clients.get(player.id-1).sendMessage("PROMPT");
+            String clientMessage = Server.getInstance().readMessageFromClient(player.id-1);
+            processPlayerChoice(player, clientMessage, throwCard);
         }
     }
 
@@ -132,9 +136,11 @@ public class GameEngine {
     
     private void displayHandToClients() {
         for (Player player : Server.getInstance().players) {
-            Server.getInstance().clients.get(player.id - 1).sendMessage("\033[32m(" + player.id +") Your hand: \033[0m");
-            for (Card card : player.hand) {
-                Server.getInstance().clients.get(player.id - 1).sendMessage("\033[32m" + card.getCardString(false) + "\033[0m");
+            if (player instanceof Human) {
+                Server.getInstance().clients.get(player.id - 1).sendMessage("\033[32m(" + player.id +") Your hand: \033[0m");
+                for (Card card : player.hand) {
+                    Server.getInstance().clients.get(player.id - 1).sendMessage("\033[32m" + card.getCardString(false) + "\033[0m");
+                }
             }
         }
     }
@@ -142,9 +148,11 @@ public class GameEngine {
     private void displayChosenCardsToClient(int round) {
         round++;
         for (Player player : Server.getInstance().players) {
-            Server.getInstance().clients.get(player.id - 1).sendMessage("\033[33m(" + player.id + ") Cards after round: "+ round +" \033[0m");
-            for (Card card : player.chosenCards) {
-                Server.getInstance().clients.get(player.id - 1).sendMessage("\033[34m" + card.getCardString(false) + "\033[0m");
+            if (player instanceof Human) {
+                Server.getInstance().clients.get(player.id - 1).sendMessage("\033[33m(" + player.id + ") Cards after round: "+ round +" \033[0m");
+                for (Card card : player.chosenCards) {
+                    Server.getInstance().clients.get(player.id - 1).sendMessage("\033[34m" + card.getCardString(false) + "\033[0m");
+                }
             }
         }
     }

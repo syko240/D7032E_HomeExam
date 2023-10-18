@@ -3,6 +3,7 @@ package communication;
 import java.net.*;
 import java.util.ArrayList;
 
+import game.player.Bot;
 import game.player.Human;
 import game.player.Player;
 
@@ -81,6 +82,14 @@ public class Server {
             server_instance = new Server();
 
         return server_instance;
+    }
+
+    public void initiateBots(int amountOfBots) {
+        int startId = players.size();
+        for (int i = 1; i <= amountOfBots; i++) {
+            Bot bot = new Bot(startId + i); 
+            players.add(bot);
+        }
     }
 
     public boolean acceptClient() {

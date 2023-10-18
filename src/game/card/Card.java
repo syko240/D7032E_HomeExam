@@ -17,7 +17,7 @@ public abstract class Card {
 
     public abstract String getName();
 
-    public abstract String getletter();
+    public abstract String getLetter();
 
     public abstract String getRegion();
 

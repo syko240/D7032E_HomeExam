@@ -34,14 +34,6 @@ class BoomerangGame {
     }
 
     public void init(int port, int numPlayers, int numBots) throws Exception {
-        /*deck = Deck.loadCardsFromJSON("resources/australia/cards.json");
-
-        for (Card card : deck) {
-            if (card instanceof CardAustralia) {
-                ((CardAustralia) card).printCard();
-                System.out.println();  // Add an empty line between cards for better readability
-            }
-        }*/
         drafting = new BasicDraft();
         gameMode = new BoomerangAustralia();
 
@@ -85,8 +77,10 @@ class BoomerangGame {
     public void server(int port, int numPlayers, int numBots) throws Exception {
         Server.getInstance().serverStart(port);
         Server.getInstance().listenToClients(numPlayers);
+        Server.getInstance().initiateBots(numBots);
         Server.getInstance().broadcastMessage("Hello Client");
         ArrayList<String> messages = Server.getInstance().waitForClientMessages();
+        System.out.println("TEST1");
         for (String message : messages) {
             System.out.println(message);
         }

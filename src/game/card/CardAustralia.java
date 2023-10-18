@@ -16,7 +16,7 @@ public class CardAustralia extends Card {
         return name;
     }
 
-    public String getletter() {
+    public String getLetter() {
         return letter;
     }
 
@@ -93,7 +93,7 @@ public class CardAustralia extends Card {
             cardString.append("card(");
         }
         cardString.append("name: \"").append(getName()).append("\", ");
-        cardString.append("letter: \"").append(getletter()).append("\", ");
+        cardString.append("letter: \"").append(getLetter()).append("\", ");
         cardString.append("region: \"").append(getRegion()).append("\", ");
         cardString.append("number: \"").append(getNumber()).append("\", ");
         cardString.append("collection: \"").append(getCollection()).append("\", ");
