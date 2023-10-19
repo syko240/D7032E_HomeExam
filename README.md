@@ -2,7 +2,7 @@
 
 Tested for Java Version 20 on Windows
 
-## Rungit statu
+## Run
 compile code with compile.bat
 
 start server with startServer.bat
