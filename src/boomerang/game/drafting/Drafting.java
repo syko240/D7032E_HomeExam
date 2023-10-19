@@ -2,8 +2,8 @@ package boomerang.game.drafting;
 
 import java.util.List;
 
-import boomerang.game.Player;
+import boomerang.game.player.Player;
 
 public interface Drafting {
-    void draft(Player currentPlayer, List<Player> allPlayers);
+    void draft(List<Player> players);
 }

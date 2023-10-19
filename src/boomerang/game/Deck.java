@@ -5,6 +5,8 @@ import java.io.FileReader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import boomerang.game.card.Card;
+import boomerang.game.card.CardAustralia;
 
 public class Deck {
     public static List<Card> loadCardsFromJSON(String filename) {
@@ -19,14 +21,14 @@ public class Deck {
                 JSONObject cardObject = (JSONObject) o;
 
                 String name = (String) cardObject.get("name");
-                String site = (String) cardObject.get("site");
+                String letter = (String) cardObject.get("letter");
                 String region = (String) cardObject.get("region");
                 int number = Integer.parseInt(cardObject.get("number").toString());
                 String collection = (String) cardObject.get("collection");
                 String animal = (String) cardObject.get("animal");
                 String activity = (String) cardObject.get("activity");
 
-                deck.add(new Card(name, site, region, number, collection, animal, activity));
+                deck.add(new CardAustralia(name, letter, region, number, collection, animal, activity));
             }
         } catch (Exception e) {
             e.printStackTrace();

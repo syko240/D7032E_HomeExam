@@ -1,36 +1,68 @@
 package boomerang.game;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import boomerang.game.drafting.Drafting;
+import boomerang.communication.Server;
+import boomerang.game.displaymanager.IDisplayManager;
 import boomerang.game.gamemode.GameMode;
+import boomerang.game.inputhandler.IInputHandler;
+import boomerang.game.player.Player;
 
 public class GameEngine {
+    private final int LOOP_COUNT = 4;
+    private final int DRAFT_COUNT = 6;
     private GameMode gameMode;
-    private Drafting draftingStrategy;
-    private List<Player> players;
-
-    public GameEngine(GameMode gameMode, Drafting draftingStrategy, List<Player> players) {
+    private Drafting drafting;
+    private IDisplayManager displayManager;
+    private IInputHandler inputHandler;
+    private Server server = Server.getInstance();
+    
+    public GameEngine(GameMode gameMode, Drafting drafting, IDisplayManager displayManager, IInputHandler inputHandler) {
         this.gameMode = gameMode;
-        this.draftingStrategy = draftingStrategy;
-        this.players = players;
+        this.drafting = drafting;
+        this.displayManager = displayManager;
+        this.inputHandler = inputHandler;
     }
 
     public void startGame() {
 
-        // Game rounds, handling drafts, and other game logic
-        for (int i = 0; i < 4; i++) {
-            draftRound();
-            // Simplified scoring for brevity
-            for (Player player : players) {
-                System.out.println("Player's score after round " + (i+1) + ": " + gameMode.scoreRound(player));
+        for (int round = 0; round < LOOP_COUNT; round++) {
+            // New round
+            System.out.println("Round: " + (round+1));
+            initializeRound();
+            boolean throwCard = true;
+
+            for (int draft = 0; draft < DRAFT_COUNT; draft++) {
+                displayManager.printRound(round, draft);
+                throwCard = displayManager.fetchPropmtMessage(draft);
+
+                server.broadcastMessage("PROMPT");
+                ArrayList<String> messages = server.waitForClientMessages();
+                inputHandler.checkPlayerInput(messages, throwCard);
+
+                drafting.draft(server.players);
             }
+
+            displayManager.printRoundSummary(round, gameMode); // display all the chosen cards to the client after each round
+
+            server.broadcastMessage("PROMPT");
+            server.waitForClientMessages(); // wait for user input, then start next round
         }
+
+        displayManager.printGameSummary();
+
+        server.broadcastMessage("END");
     }
 
-    public void draftRound() {
-        for (Player player : players) {
-            draftingStrategy.draft(player, players);
+    private void initializeRound() {
+        // reset the deck
+        gameMode.initializeDeck();
+
+        // shuffle deck and draft cards to players
+        for (Player player : server.players) {
+            player.hand = gameMode.draftCards();
+            player.chosenCards.clear();
         }
     }
 }
