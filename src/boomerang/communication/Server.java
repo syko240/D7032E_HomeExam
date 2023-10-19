@@ -2,18 +2,22 @@ package boomerang.communication;
 
 import java.net.*;
 import java.util.ArrayList;
+import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import boomerang.communication.threadpool.IExecutableTask;
+import boomerang.communication.threadpool.ThreadPool;
 import boomerang.game.player.Bot;
 import boomerang.game.player.Human;
 import boomerang.game.player.Player;
 
-import java.io.*;
-
 public class Server {
-    public ServerSocket aSocket;
-    public ArrayList<ClientHandler> clients = new ArrayList<ClientHandler>();
-    public ArrayList<Player> players = new ArrayList<Player>();
+    private ServerSocket aSocket;
+    private ArrayList<ClientHandler> clients = new ArrayList<>();
+    private PlayerManager playerManager = new PlayerManager();
     private static Server server_instance = null;
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     public class ClientHandler {
         private int id;
@@ -30,7 +34,7 @@ public class Server {
                 this.id = nextId;
                 nextId++;
             } catch (Exception e) {
-                // handle exception
+                LOGGER.log(Level.WARNING, "Error initializing ClientHandler", e);
             }
         }
 
@@ -38,7 +42,7 @@ public class Server {
             try {
                 outToClient.writeObject(message);
             } catch (Exception e) {
-                // handle exception
+                LOGGER.log(Level.WARNING, "Error sending message to client", e);
             }
         }
 
@@ -46,11 +50,13 @@ public class Server {
             try {
                 return (String) inFromClient.readObject();
             } catch (SocketException se) {
-                // Client lost connection
+                // client lost connection
                 broadcastConnectionTerminated();
+                LOGGER.log(Level.INFO, "Client lost connection", se);
                 return null;
             } catch (Exception e) {
-                // Handle other exceptions
+                // handle other reading exceptions
+                LOGGER.log(Level.WARNING, "Error reading message from client", e);
                 return null;
             }
         }
@@ -61,19 +67,19 @@ public class Server {
                 outToClient.close();
                 inFromClient.close();
             } catch (Exception e) {
-                // Handle exception
+                LOGGER.log(Level.WARNING, "Error terminating client connection", e);
             }
         }
     }
 
-    public Server() {
+    private Server() {
     }
 
     public void serverStart(int port) {
         try {
             this.aSocket = new ServerSocket(port);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error starting the server", e);
         }
     }
 
@@ -85,11 +91,7 @@ public class Server {
     }
 
     public void initiateBots(int amountOfBots) {
-        int startId = players.size();
-        for (int i = 1; i <= amountOfBots; i++) {
-            Bot bot = new Bot(startId + i); 
-            players.add(bot);
-        }
+        playerManager.initiateBots(amountOfBots);
     }
 
     public boolean acceptClient() {
@@ -97,12 +99,10 @@ public class Server {
             Socket connection = aSocket.accept();
             ClientHandler handler = new ClientHandler(connection);
             clients.add(handler);
-
-            Human newPlayer = new Human(handler.id);
-            players.add(newPlayer);
-
+            playerManager.addHuman(handler.id);
             return true;
         } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Error accepting client", e);
             return false;
         }
     }
@@ -110,7 +110,7 @@ public class Server {
     public void listenToClients(int amountOfPlayers) {
         while (clients.size() < amountOfPlayers) {
             if (acceptClient()) {
-                System.out.println("Player " + players.get(players.size() - 1).getId() + " connected");
+                System.out.println("Player " + getPlayers().get(getPlayers().size() - 1).getId() + " connected");
             }
         }
     }
@@ -123,14 +123,14 @@ public class Server {
             }
         }
 
-        // Close the server socket if the END message is sent
+        // close the server socket if the END message is sent
         if ("END".equals(message) || "Connection terminated".equals(message)) {
             try {
                 aSocket.close();
             } catch (IOException e) {
-                // Handle exception
+                LOGGER.log(Level.SEVERE, "Error closing server socket", e);
             }
-            System.exit(0); // Terminate the server application
+            System.exit(0); // terminate the server application
         }
     }
 
@@ -145,11 +145,41 @@ public class Server {
 
     // wait for messages from all clients
     public ArrayList<String> waitForClientMessages() {
-        ThreadPool<String> pool = new ThreadPool<String>(clients.size());
+        ThreadPool<String> pool = new ThreadPool<>(clients.size());
         for (int i = 0; i < clients.size(); i++) {
             int id = i;
-            pool.submit_task(() -> readMessageFromClient(id));
+            IExecutableTask<String> task = () -> readMessageFromClient(id);
+            pool.submitTask(task);
         }
-        return pool.run_tasks();
+        return (ArrayList<String>) pool.executeTasks();
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return playerManager.getPlayers();
+    }
+
+    public ArrayList<ClientHandler> getClients() {
+        return clients;
+    }
+}
+
+class PlayerManager {
+    private ArrayList<Player> players = new ArrayList<>();
+
+    public void initiateBots(int amountOfBots) {
+        int startId = players.size();
+        for (int i = 1; i <= amountOfBots; i++) {
+            Bot bot = new Bot(startId + i);
+            players.add(bot);
+        }
+    }
+
+    public void addHuman(int id) {
+        Human newPlayer = new Human(id);
+        players.add(newPlayer);
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

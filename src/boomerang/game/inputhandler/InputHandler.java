@@ -20,7 +20,7 @@ public class InputHandler implements IInputHandler {
 
     @Override
     public void checkPlayerInput(ArrayList<String> messages, boolean throwCard) {
-        for (Player player : server.players) {
+        for (Player player : server.getPlayers()) {
             if (player instanceof Bot) {
                 // Simulate bot action
                 String botChoice = ((Bot) player).chooseCard();
@@ -33,7 +33,7 @@ public class InputHandler implements IInputHandler {
 
                 Number key = entry.getKey();
                 String value = entry.getValue();
-                processPlayerChoice(server.players.get(key.intValue()-1), value, throwCard);
+                processPlayerChoice(server.getPlayers().get(key.intValue()-1), value, throwCard);
             }
         }
     }
@@ -53,15 +53,15 @@ public class InputHandler implements IInputHandler {
             index++;
         }
         if (!validInput && player instanceof Human) {
-            server.clients.get(player.getId()-1).sendMessage(COLOR_RED + "Chose a valid card in your hand by entering the correct \'letter\'" + RESET_COLOR);
-            server.clients.get(player.getId()-1).sendMessage("PROMPT");
+            server.getClients().get(player.getId()-1).sendMessage(COLOR_RED + "Chose a valid card in your hand by entering the correct \'letter\'" + RESET_COLOR);
+            server.getClients().get(player.getId()-1).sendMessage("PROMPT");
             String clientMessage = server.readMessageFromClient(player.getId()-1);
             Map<Number, String> msg = splitMessage(clientMessage);
             Map.Entry<Number, String> entry = msg.entrySet().iterator().next();
 
             Number key = entry.getKey();
             String value = entry.getValue();
-            processPlayerChoice(server.players.get(key.intValue()-1), value, throwCard);
+            processPlayerChoice(server.getPlayers().get(key.intValue()-1), value, throwCard);
         }
     }
 

@@ -38,7 +38,7 @@ public class CommunicationHandler {
     private void awaitMessageFromServer() {
         try {
             while (true) {
-                String message = client.readMessageFromServer();
+                String message = client.awaitMessageFromServer();
                 if (message.equals("PROMPT")) {
                     String inputMessage = promptClientForMessage();
                     client.sendMessage(inputMessage);

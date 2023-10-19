@@ -43,7 +43,7 @@ private Server server = Server.getInstance();
         displayChosenCardsToClient(round);
 
         server.broadcastMessage("\n" + COLOR_GREEN + "----- Score Summary -----" + RESET_COLOR);
-        for (Player player : server.players) {
+        for (Player player : server.getPlayers()) {
             server.broadcastMessage(COLOR_YELLOW + "Player " + player.getId() + " scored:" + gameMode.scoreRound(player, player.chosenCards) + RESET_COLOR);
         }
     }
@@ -54,7 +54,7 @@ private Server server = Server.getInstance();
         server.broadcastMessage(COLOR_GREEN + "----- Game Summary -----" + RESET_COLOR);
         
         // sort players by score in descending order
-        List<Player> sortedPlayers = server.players.stream()
+        List<Player> sortedPlayers = server.getPlayers().stream()
             .sorted((player1, player2) -> Integer.compare(player2.getScore(), player1.getScore()))
             .collect(Collectors.toList());
 
@@ -68,7 +68,7 @@ private Server server = Server.getInstance();
 
     @Override
     public void displayChosenCardsToClients() {
-        for (Player player : server.players) {
+        for (Player player : server.getPlayers()) {
             server.broadcastMessage(COLOR_BLUE + "Player " + player.getId() + "\'s chosen cards: " + RESET_COLOR);
             for (Card card : player.chosenCards) {
                 server.broadcastMessage(COLOR_BLUE + card.getCardString(card.getThrowCard()) + RESET_COLOR);
@@ -78,11 +78,11 @@ private Server server = Server.getInstance();
 
     @Override
     public void displayHandToClients() {
-        for (Player player : server.players) {
+        for (Player player : server.getPlayers()) {
             if (player instanceof Human) {
-                server.clients.get(player.getId() - 1).sendMessage(COLOR_GREEN + "(" + player.getId() +") Your hand: " + RESET_COLOR);
+                server.getClients().get(player.getId() - 1).sendMessage(COLOR_GREEN + "(" + player.getId() +") Your hand: " + RESET_COLOR);
                 for (Card card : player.hand) {
-                    server.clients.get(player.getId() - 1).sendMessage(COLOR_GREEN + card.getCardString(false) + RESET_COLOR);
+                    server.getClients().get(player.getId() - 1).sendMessage(COLOR_GREEN + card.getCardString(false) + RESET_COLOR);
                 }
             }
         }
@@ -91,11 +91,11 @@ private Server server = Server.getInstance();
     @Override
     public void displayChosenCardsToClient(int round) {
         round++;
-        for (Player player : server.players) {
+        for (Player player : server.getPlayers()) {
             if (player instanceof Human) {
-                server.clients.get(player.getId() - 1).sendMessage(COLOR_YELLOW + "(" + player.getId() + ") Cards after round: "+ round + " " + RESET_COLOR);
+                server.getClients().get(player.getId() - 1).sendMessage(COLOR_YELLOW + "(" + player.getId() + ") Cards after round: "+ round + " " + RESET_COLOR);
                 for (Card card : player.chosenCards) {
-                    server.clients.get(player.getId() - 1).sendMessage(COLOR_BLUE + card.getCardString(false) + RESET_COLOR);
+                    server.getClients().get(player.getId() - 1).sendMessage(COLOR_BLUE + card.getCardString(false) + RESET_COLOR);
                 }
             }
         }

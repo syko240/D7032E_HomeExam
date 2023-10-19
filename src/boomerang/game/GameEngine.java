@@ -41,7 +41,7 @@ public class GameEngine {
                 ArrayList<String> messages = server.waitForClientMessages();
                 inputHandler.checkPlayerInput(messages, throwCard);
 
-                drafting.draft(server.players);
+                drafting.draft(server.getPlayers());
             }
 
             displayManager.printRoundSummary(round, gameMode); // display all the chosen cards to the client after each round
@@ -60,7 +60,7 @@ public class GameEngine {
         gameMode.initializeDeck();
 
         // shuffle deck and draft cards to players
-        for (Player player : server.players) {
+        for (Player player : server.getPlayers()) {
             player.hand = gameMode.cardHandOut();
             player.chosenCards.clear();
         }
