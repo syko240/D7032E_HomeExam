@@ -1,7 +1,7 @@
 package boomerang.game.gamemode;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import boomerang.game.Deck;
@@ -22,8 +22,8 @@ public class BoomerangAustralia extends GameMode {
     }
 
     @Override
-    public List<Card> draftCards() {
-        List<Card> draftedCards = new LinkedList<>();
+    public List<Card> cardHandOut() {
+        List<Card> draftedCards = new ArrayList<>();
         Collections.shuffle(deck);
         for (int i = 0; i < 7; i++) {
             draftedCards.add(deck.remove(0));

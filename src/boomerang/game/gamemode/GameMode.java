@@ -14,6 +14,6 @@ public abstract class GameMode {
     }
 
     public abstract void initializeDeck();
-    public abstract List<Card> draftCards();
+    public abstract List<Card> cardHandOut();
     public abstract int scoreRound(Player player, List<Card> cards);
 }

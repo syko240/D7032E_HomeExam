@@ -56,28 +56,6 @@ public class CardAustralia extends Card {
         this.catchCard = catchCard;
     }
 
-    /*public void printCard() {
-        String border = "+----------------------------------+";
-        //String emptyLine = "|                                  |";
-    
-        System.out.println(border);
-        //System.out.println(emptyLine);
-        System.out.println("|  Name: " + padRight(getName(), 26) + "|");
-        System.out.println("|  Letter: " + padRight(getletter(), 24) + "|");
-        System.out.println("|  Region: " + padRight(getRegion(), 24) + "|");
-        System.out.println("|  Number: " + padRight(String.valueOf(getNumber()), 24) + "|");
-        System.out.println("|  Collection: " + padRight(getCollection(), 20) + "|");
-        System.out.println("|  Animal: " + padRight(getAnimal(), 24) + "|");
-        System.out.println("|  Activity: " + padRight(getActivity(), 22) + "|");
-        //System.out.println(emptyLine);
-        System.out.println(border);
-    }
-    
-    // Helper method to pad a string with spaces on the right
-    private String padRight(String s, int n) {
-        return String.format("%1$-" + n + "s", s);
-    }*/
-
     public String getCardString(boolean dontShowCard) {
         if (dontShowCard) {
             return "card(\"Throw Card\")";

@@ -26,9 +26,9 @@ public class GameEngine {
     }
 
     public void startGame() {
-
+        // main game loop
         for (int round = 0; round < LOOP_COUNT; round++) {
-            // New round
+            // new round
             System.out.println("Round: " + (round+1));
             initializeRound();
             boolean throwCard = true;
@@ -37,7 +37,7 @@ public class GameEngine {
                 displayManager.printRound(round, draft);
                 throwCard = displayManager.fetchPropmtMessage(draft);
 
-                server.broadcastMessage("PROMPT");
+                server.broadcastMessage("PROMPT"); // prompt user
                 ArrayList<String> messages = server.waitForClientMessages();
                 inputHandler.checkPlayerInput(messages, throwCard);
 
@@ -52,7 +52,7 @@ public class GameEngine {
 
         displayManager.printGameSummary();
 
-        server.broadcastMessage("END");
+        server.broadcastMessage("END"); // end game
     }
 
     private void initializeRound() {
@@ -61,7 +61,7 @@ public class GameEngine {
 
         // shuffle deck and draft cards to players
         for (Player player : server.players) {
-            player.hand = gameMode.draftCards();
+            player.hand = gameMode.cardHandOut();
             player.chosenCards.clear();
         }
     }

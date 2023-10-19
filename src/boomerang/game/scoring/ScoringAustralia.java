@@ -1,35 +1,26 @@
 package boomerang.game.scoring;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import boomerang.game.card.Card;
 import boomerang.game.card.CardAustralia;
 
 public class ScoringAustralia implements IScoring {
-private static Set<String> previouslyVisitedRegions = new HashSet<>();
 
-    @Override
-    public int calculateThrowCatchScore(Card throwCard, Card catchCard) {
-        if (throwCard == null || catchCard == null) {
-            return 0;
-        }
+    private Set<String> previouslyVisitedRegions = new HashSet<>();
+    private Map<String, List<String>> regionMap;
+    private Map<String, Integer> collectionValues;
+    private Map<String, Integer> animalScores;
 
-        int throwCardNumber = throwCard.getNumber();
-        int catchCardNumber = catchCard.getNumber();
-
-        return Math.abs(throwCardNumber - catchCardNumber);
+    public ScoringAustralia() {
+        initializeRegionMap();
+        initializeCollectionValues();
+        initializeAnimalScores();
     }
 
-    @Override
-    public int calculateRegionScore(List<Card> cards) {
-        Map<String, List<String>> regionMap = new HashMap<>() {
+    private void initializeRegionMap() {
+        regionMap = new HashMap<>() {
             {
                 put("Western Australia", Arrays.asList("A", "B", "C", "D"));
                 put("Northern Territory", Arrays.asList("E", "F", "G", "H"));
@@ -40,121 +31,96 @@ private static Set<String> previouslyVisitedRegions = new HashSet<>();
                 put("Tasmania", Arrays.asList("Y", "Z", "*", "-"));
             }
         };
+    }
 
-        List<String> visitedSites = cards.stream().map(Card::getLetter).collect(Collectors.toList());
+    private void initializeCollectionValues() {
+        collectionValues = Map.of(
+            "Leaves", 1,
+            "Wildflowers", 2,
+            "Shells", 3,
+            "Souvenirs", 5
+        );
+    }
 
-        int score = 0;
-        List<String> completedRegions = new ArrayList<>();
+    private void initializeAnimalScores() {
+        animalScores = Map.of(
+            "Kangaroo", 3,
+            "Emu", 4,
+            "Wombat", 5,
+            "Koala", 7,
+            "Platypus", 9
+        );
+    }
 
-        for (Map.Entry<String, List<String>> entry : regionMap.entrySet()) {
-            if (visitedSites.containsAll(entry.getValue()) && !previouslyVisitedRegions.contains(entry.getKey())) {
-                completedRegions.add(entry.getKey());
-                score += 3;
-            }
+    @Override
+    public int calculateThrowCatchScore(Card throwCard, Card catchCard) {
+        if (throwCard == null || catchCard == null) {
+            return 0;
         }
+        return Math.abs(throwCard.getNumber() - catchCard.getNumber());
+    }
 
-        score += visitedSites.size();
+    @Override
+    public int calculateRegionScore(List<Card> cards) {
+        List<String> visitedSites = cards.stream().map(Card::getLetter).collect(Collectors.toList());
+        int score = visitedSites.size();
 
-        previouslyVisitedRegions.addAll(completedRegions);
+        score += regionMap.entrySet().stream()
+            .filter(entry -> visitedSites.containsAll(entry.getValue()) && !previouslyVisitedRegions.contains(entry.getKey()))
+            .peek(entry -> previouslyVisitedRegions.add(entry.getKey()))
+            .count() * 3;
 
         return score;
     }
 
     @Override
     public int calculateIconScore(List<Card> cards) {
-        Map<String, Integer> collectionValues = new HashMap<>();
-        collectionValues.put("Leaves", 1);
-        collectionValues.put("Wildflowers", 2);
-        collectionValues.put("Shells", 3);
-        collectionValues.put("Souvenirs", 5);
+        int totalScore = cards.stream()
+            .filter(card -> card instanceof CardAustralia)
+            .mapToInt(card -> collectionValues.getOrDefault(((CardAustralia) card).getCollection(), 0))
+            .sum();
 
-        int totalScore = 0;
-        for (Card card : cards) {
-            if (card instanceof CardAustralia) {
-                CardAustralia ausCard = (CardAustralia) card;
-                String collectionItem = ausCard.getCollection();
-                if (collectionValues.containsKey(collectionItem)) {
-                    totalScore += collectionValues.get(collectionItem);
-                }
-            }
-        }
-
-        if (totalScore <= 7) {
-            totalScore *= 2;
-        }
-
-        return totalScore;
+        return totalScore <= 7 ? totalScore * 2 : totalScore;
     }
 
     @Override
     public int calculatePairScore(List<Card> cards) {
-        Map<String, Integer> animalCounts = new HashMap<>();
-        Map<String, Integer> animalScores = new HashMap<>();
+        Map<String, Long> animalCounts = cards.stream()
+            .map(card -> ((CardAustralia) card).getAnimal())
+            .collect(Collectors.groupingBy(animal -> animal, Collectors.counting()));
 
-        animalScores.put("Kangaroo", 3);
-        animalScores.put("Emu", 4);
-        animalScores.put("Wombat", 5);
-        animalScores.put("Koala", 7);
-        animalScores.put("Platypus", 9);
-
-        for (Card card : cards) {
-            String animal = ((CardAustralia) card).getAnimal();
-            animalCounts.put(animal, animalCounts.getOrDefault(animal, 0) + 1);
-        }
-
-        int totalScore = 0;
-
-        for (String animal : animalCounts.keySet()) {
-            int pairs = animalCounts.get(animal) / 2;
-            totalScore += pairs * animalScores.getOrDefault(animal, 0);
-        }
-
-        return totalScore;
+        return animalCounts.entrySet().stream()
+            .mapToInt(entry -> (int) (entry.getValue() / 2) * animalScores.getOrDefault(entry.getKey(), 0))
+            .sum();
     }
 
     @Override
     public int calculateSpecialScore(List<Card> cards) {
-        Map<String, Integer> activityCount = new HashMap<>();
+        long maxActivityCount = cards.stream()
+            .map(card -> ((CardAustralia) card).getActivity())
+            .filter(Objects::nonNull)
+            .collect(Collectors.groupingBy(activity -> activity, Collectors.counting()))
+            .values().stream()
+            .mapToLong(Long::longValue)
+            .max().orElse(0);
 
-        for (Card card : cards) {
-            String activity = ((CardAustralia) card).getActivity();
-            if (activity != null) {
-                activityCount.put(activity, activityCount.getOrDefault(activity, 0) + 1);
-            }
-        }
-
-        int maxActivityCount = 0;
-        for (Integer count : activityCount.values()) {
-            maxActivityCount = Math.max(maxActivityCount, count);
-        }
-
-        switch (maxActivityCount) {
-            case 1:
-                return 0;
-            case 2:
-                return 2;
-            case 3:
-                return 4;
-            case 4:
-                return 7;
-            case 5:
-                return 10;
-            case 6:
-                return 15;
-            default:
-                return 0;
-        }
+        return switch ((int) maxActivityCount) {
+            case 1 -> 0;
+            case 2 -> 2;
+            case 3 -> 4;
+            case 4 -> 7;
+            case 5 -> 10;
+            case 6 -> 15;
+            default -> 0;
+        };
     }
 
     @Override
     public int calculateTotalScore(List<Card> cards) {
-        int throwAndCatchScore = calculateThrowCatchScore(cards.get(0),
-                cards.get(cards.size() - 1));
-        int touristSitesScore = calculateRegionScore(cards);
-        int collectionsScore = calculateIconScore(cards);
-        int animalsScore = calculatePairScore(cards);
-        int activitiesScore = calculateSpecialScore(cards);
-
-        return throwAndCatchScore + touristSitesScore + collectionsScore + animalsScore + activitiesScore;
+        return calculateThrowCatchScore(cards.get(0), cards.get(cards.size() - 1))
+            + calculateRegionScore(cards)
+            + calculateIconScore(cards)
+            + calculatePairScore(cards)
+            + calculateSpecialScore(cards);
     }
 }

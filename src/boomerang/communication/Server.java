@@ -152,19 +152,4 @@ public class Server {
         }
         return pool.run_tasks();
     }
-
-    // wait for message from client
-    public String waitForClientMessage(int id) {
-        ThreadPool<String> pool = new ThreadPool<String>(1);
-        pool.submit_task(() -> readMessageFromClient(id));
-        return pool.run_tasks().get(0);
-    }
-
-    public Player getPlayerById(int id) {
-        return players.get(id);
-    }
-
-    public int getNumberOfPlayers() {
-        return players.size();
-    }
 }
