@@ -3,7 +3,7 @@
 Tested for Java Version 20 on Windows
 
 ## Compile
-compile code with compile.bat
+compile code and test with compile.bat
 
 ## Run
 start server with startServer.bat
@@ -14,5 +14,10 @@ start client with startClient.bat
 
 ## Test
 
-Strategy Pattern 
-Template Pattern
+run tests with unittest.bat
+
+### OLD
+
+compile code and tests with unittestOLD.bat
+
+run tests with unittestOLD.bat
