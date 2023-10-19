@@ -3,7 +3,7 @@
 Tested for Java Version 20 on Windows
 
 ## Compile
-compile code and test with compile.bat
+compile code and tests with compile.bat
 
 ## Run
 start server with startServer.bat
@@ -16,7 +16,7 @@ start client with startClient.bat
 
 run tests with unittest.bat
 
-### OLD
+## OLD Code
 
 compile code and tests with unittestOLD.bat
 
