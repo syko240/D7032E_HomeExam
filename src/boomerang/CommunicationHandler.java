@@ -13,10 +13,10 @@ public class CommunicationHandler {
 
     public void startServer(int port, int numPlayers, int numBots) throws Exception {
         server.serverStart(port);
-        server.listenToClients(numPlayers);
-        server.initiateBots(numBots);
+        server.listenToClients(numPlayers); // connect clients
+        server.initiateBots(numBots); // add bots
         server.broadcastMessage("Hello Client");
-        ArrayList<String> messages = server.waitForClientMessages();
+        ArrayList<String> messages = server.waitForClientMessages(); // wait for all clients to connect
         for (String message : messages) {
             System.out.println(message);
         }
@@ -26,7 +26,7 @@ public class CommunicationHandler {
         client = new Client(ipAddress, port);
         String message = client.awaitMessageFromServer();
         System.out.println(message);
-        client.sendMessage("Hello Server");
+        client.sendMessage("Hello Server"); // notify server that client is ready
         awaitMessageFromServer();
     }
 
@@ -39,7 +39,7 @@ public class CommunicationHandler {
         try {
             while (true) {
                 String message = client.awaitMessageFromServer();
-                if (message.equals("PROMPT")) {
+                if (message.equals("PROMPT")) { // check if message received = PROMPT, if so, then prompt the user for input
                     String inputMessage = promptClientForMessage();
                     client.sendMessage(inputMessage);
                 } else if (message.equals("END")) {
