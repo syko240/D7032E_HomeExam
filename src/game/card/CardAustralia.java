@@ -102,26 +102,4 @@ public class CardAustralia extends Card {
     
         return cardString.toString();
     }
-
-    /*public String getCardString() {
-        String border = "+----------------------------------+";
-        StringBuilder cardString = new StringBuilder();
-    
-        cardString.append(border).append("\n");
-        cardString.append("|  Name: ").append(padRight(getName(), 26)).append("|").append("\n");
-        cardString.append("|  Letter: ").append(padRight(getletter(), 24)).append("|").append("\n");
-        cardString.append("|  Region: ").append(padRight(getRegion(), 24)).append("|").append("\n");
-        cardString.append("|  Number: ").append(padRight(String.valueOf(getNumber()), 24)).append("|").append("\n");
-        cardString.append("|  Collection: ").append(padRight(getCollection(), 20)).append("|").append("\n");
-        cardString.append("|  Animal: ").append(padRight(getAnimal(), 24)).append("|").append("\n");
-        cardString.append("|  Activity: ").append(padRight(getActivity(), 22)).append("|").append("\n");
-        cardString.append(border).append("\n");
-    
-        return cardString.toString();
-    }
-    
-    // Helper method to pad a string with spaces on the right
-    private String padRight(String s, int n) {
-        return String.format("%1$-" + n + "s", s);
-    }*/
 }

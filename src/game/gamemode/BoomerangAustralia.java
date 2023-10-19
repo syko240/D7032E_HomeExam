@@ -7,15 +7,21 @@ import java.util.List;
 import game.Deck;
 import game.card.Card;
 import game.player.Player;
+import game.scoring.Scoring;
 
-public class BoomerangAustralia implements GameMode {
+public class BoomerangAustralia extends GameMode {
     private List<Card> deck;
+
+    public BoomerangAustralia(Scoring scoring) {
+        super(scoring);
+    }
 
     @Override
     public void initializeDeck() {
         this.deck = Deck.loadCardsFromJSON("resources/australia/cards.json");
     }
 
+    @Override
     public List<Card> draftCards() {
         List<Card> draftedCards = new LinkedList<>();
         Collections.shuffle(deck);
@@ -26,12 +32,9 @@ public class BoomerangAustralia implements GameMode {
     }
 
     @Override
-    public int scoreRound(Player player) {
-        return 0;
-        /*int score = 0;
-        for (Card card : Player.draft) {
-            score += card.getNumber();
-        }
-        return score;*/
+    public int scoreRound(Player player, List<Card> cards) {
+        int score = this.scoring.calculateTotalScore(cards);
+        player.addScore(score);
+        return score;
     }
 }

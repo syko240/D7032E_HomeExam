@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import game.gamemode.GameMode;
+import game.scoring.Scoring;
+import game.scoring.ScoringAustralia;
 import game.gamemode.BoomerangAustralia;
 import communication.*;
 import game.*;
@@ -11,6 +13,7 @@ import game.drafting.Drafting;
 class BoomerangGame {
     private GameMode gameMode;
     private GameEngine game;
+    private Scoring scoring;
     private Drafting drafting;
     private Client client;
     private final Scanner scanner = new Scanner(System.in);
@@ -35,7 +38,8 @@ class BoomerangGame {
 
     public void init(int port, int numPlayers, int numBots) throws Exception {
         drafting = new BasicDraft();
-        gameMode = new BoomerangAustralia();
+        scoring = new ScoringAustralia();
+        gameMode = new BoomerangAustralia(scoring);
 
         server(port, numPlayers, numBots);
 
@@ -80,7 +84,6 @@ class BoomerangGame {
         Server.getInstance().initiateBots(numBots);
         Server.getInstance().broadcastMessage("Hello Client");
         ArrayList<String> messages = Server.getInstance().waitForClientMessages();
-        System.out.println("TEST1");
         for (String message : messages) {
             System.out.println(message);
         }

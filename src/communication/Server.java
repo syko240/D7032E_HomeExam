@@ -110,7 +110,7 @@ public class Server {
     public void listenToClients(int amountOfPlayers) {
         while (clients.size() < amountOfPlayers) {
             if (acceptClient()) {
-                System.out.println("Player " + players.get(players.size() - 1).id + " connected");
+                System.out.println("Player " + players.get(players.size() - 1).getId() + " connected");
             }
         }
     }
@@ -143,6 +143,7 @@ public class Server {
         return "(ClientID: "+ clientID +")" + clients.get(id).readMessage();
     }
 
+    // wait for messages from all clients
     public ArrayList<String> waitForClientMessages() {
         ThreadPool<String> pool = new ThreadPool<String>(clients.size());
         for (int i = 0; i < clients.size(); i++) {
@@ -152,7 +153,12 @@ public class Server {
         return pool.run_tasks();
     }
 
-    
+    // wait for message from client
+    public String waitForClientMessage(int id) {
+        ThreadPool<String> pool = new ThreadPool<String>(1);
+        pool.submit_task(() -> readMessageFromClient(id));
+        return pool.run_tasks().get(0);
+    }
 
     public Player getPlayerById(int id) {
         return players.get(id);
