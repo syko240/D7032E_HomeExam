@@ -10,8 +10,15 @@ public class CommunicationHandler {
     private Client client;
     private Server server = Server.getInstance();
     private final Scanner scanner = new Scanner(System.in);
+    public static boolean TEST_MODE1 = false; // testing requirement 1
 
     public void startServer(int port, int numPlayers, int numBots) throws Exception {
+        if ((numPlayers + numBots) > 4 || (numPlayers + numBots) < 2) {
+            throw new IllegalArgumentException("Invalid amount of players");
+        }
+        if (TEST_MODE1) { // stop here if true
+            return;
+        }
         server.serverStart(port);
         server.listenToClients(numPlayers); // connect clients
         server.initiateBots(numBots); // add bots

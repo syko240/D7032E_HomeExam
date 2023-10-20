@@ -13,35 +13,35 @@ public class CardAustralia extends Card {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getLetter() {
-        return letter;
+        return this.letter;
     }
 
     public String getRegion() {
-        return region;
+        return this.region;
     }
 
     public int getNumber() {
-        return number;
+        return this.number;
     }
 
     public String getCollection() {
-        return collection;
+        return this.collection;
     }
 
     public String getAnimal() {
-        return animal;
+        return this.animal;
     }
 
     public String getActivity() {
-        return activity;
+        return this.activity;
     }
 
     public boolean getThrowCard() {
-        return throwCard;
+        return this.throwCard;
     }
 
     public void setThrowCard(boolean throwCard) {
@@ -49,7 +49,7 @@ public class CardAustralia extends Card {
     }
 
     public boolean getCatchCard() {
-        return catchCard;
+        return this.catchCard;
     }
 
     public void setCatchCard(boolean catchCard) {

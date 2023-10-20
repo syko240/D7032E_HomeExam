@@ -87,8 +87,9 @@ public class ScoringAustralia implements IScoring {
     public int calculatePairScore(List<Card> cards) {
         Map<String, Long> animalCounts = cards.stream()
             .map(card -> ((CardAustralia) card).getAnimal())
+            .filter(animal -> !animal.isEmpty())
             .collect(Collectors.groupingBy(animal -> animal, Collectors.counting()));
-
+        
         return animalCounts.entrySet().stream()
             .mapToInt(entry -> (int) (entry.getValue() / 2) * animalScores.getOrDefault(entry.getKey(), 0))
             .sum();

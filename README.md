@@ -15,9 +15,3 @@ start client with startClient.bat
 ## Test
 
 run tests with unittest.bat
-
-## OLD Code
-
-compile code and tests with unittestOLD.bat
-
-run tests with unittestOLD.bat

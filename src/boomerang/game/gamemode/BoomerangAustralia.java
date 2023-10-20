@@ -22,9 +22,14 @@ public class BoomerangAustralia extends GameMode {
     }
 
     @Override
+    public void shuffleDeck() {
+        Collections.shuffle(this.deck);
+    }
+
+    @Override
     public List<Card> cardHandOut() {
         List<Card> draftedCards = new ArrayList<>();
-        Collections.shuffle(deck);
+        shuffleDeck();
         for (int i = 0; i < 7; i++) {
             draftedCards.add(deck.remove(0));
         }
@@ -36,5 +41,10 @@ public class BoomerangAustralia extends GameMode {
         int score = this.scoring.calculateTotalScore(cards);
         player.addScore(score);
         return score;
+    }
+
+    @Override
+    public List<Card> getDeck() {
+        return this.deck;
     }
 }
